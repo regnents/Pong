@@ -1,1 +1,1 @@
-Sebuah readme
+Simple Pong game created for Agate Academy program.
