@@ -14,10 +14,14 @@ public class BallControl : MonoBehaviour
     // Titik asal lintasan bola saat ini
     private Vector2 trajectoryOrigin;
 
+    private float initialForceMagnitude;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+
+        initialForceMagnitude = Mathf.Sqrt(Mathf.Pow(xInitialForce, 2) + Mathf.Pow(yInitialForce, 2));
 
         // Mulai game
         RestartGame();
@@ -41,29 +45,27 @@ public class BallControl : MonoBehaviour
 
     void PushBall()
     {
-        float xForce = xInitialForce;
-        float yForce = yInitialForce;
-        
-        // Tentukan nilai acak antara 0 (inklusif) dan 2 (eksklusif)
-        float randomX = Random.Range(0, 2);
+        // tentukan besaran gaya pada sumbu vertikal (sumbu y)
+        float yForce = Random.Range(-yInitialForce, yInitialForce);
 
-        float randomY = Random.Range(0, 2);
+        // Tentukan besaran gaya pada sumbu horizontal (sumbu X)
+        // Tentukan berdasarkan kecepatan serta besar gaya sumbu Y
+        float xForce = Mathf.Sqrt(Mathf.Pow(initialForceMagnitude, 2) - Mathf.Pow(yForce, 2));
+
+        // Tentukan nilai acak untuk menentukan arah X
+        float randomXDirection = Random.Range(0, 2);
+
 
         // Jika nilainya di bawah 1, bola bergerak ke kiri. 
         // Jika tidak, bola bergerak ke kanan.
-        if (randomX < 1.0f)
+        if (randomXDirection < 1.0f)
         {
-
-            xForce = xForce * (-1);
-        }
-
-        if (randomY < 1.0f)
-        {
-            yForce = yForce * (-1);
+            xForce *= (-1);
         }
 
         // Gunakan gaya untuk menggerakkan bola ini.
-        rigidBody2D.AddForce(new Vector2(xForce, yForce));
+        rigidBody2D.AddForce(new Vector2(xInitialForce, yInitialForce));
+
     }
 
     void RestartGame()
