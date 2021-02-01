@@ -15,6 +15,7 @@ public class BallControl : MonoBehaviour
     private Vector2 trajectoryOrigin;
 
     private float initialForceMagnitude;
+    private float initialSpeed;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class BallControl : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
 
         initialForceMagnitude = Mathf.Sqrt(Mathf.Pow(xInitialForce, 2) + Mathf.Pow(yInitialForce, 2));
+        initialSpeed = initialForceMagnitude * Time.fixedDeltaTime / rigidBody2D.mass;
 
         // Mulai game
         RestartGame();
@@ -31,7 +33,11 @@ public class BallControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float currSpeed = rigidBody2D.velocity.magnitude;
+        if (currSpeed != initialSpeed)
+        {
+            rigidBody2D.velocity *= (initialSpeed / currSpeed);
+        }
     }
 
     void ResetBall()
@@ -64,7 +70,7 @@ public class BallControl : MonoBehaviour
         }
 
         // Gunakan gaya untuk menggerakkan bola ini.
-        rigidBody2D.AddForce(new Vector2(xInitialForce, yInitialForce));
+        rigidBody2D.AddForce(new Vector2(xForce, yForce));
 
     }
 

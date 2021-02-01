@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour
     // Objek untuk menggambar prediksi lintasan bola
     public Trajectory trajectory;
 
+    // Apakah sedang kondisi debugging atau tidak
+    private bool isDebugging = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -116,10 +119,13 @@ public class GameManager : MonoBehaviour
             
         }
 
-        //if (GUI.Button(new Rect(Screen.width / 2 - 60, Screen.height - 73, 120, 53), "toggle\ndebug info"))
-        //{
-        //    isDebugWindowShown = !isDebugWindowShown;
-        //}
+        if (isDebugging)
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - 60, Screen.height - 73, 120, 53), "toggle\ndebug info"))
+            {
+                isDebugWindowShown = !isDebugWindowShown;
+            }
+        }
 
         trajectory.enabled = !trajectory.enabled;
     }
